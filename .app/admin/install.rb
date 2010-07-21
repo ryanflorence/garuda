@@ -9,11 +9,11 @@
 # 
 #      $ ruby -e "$(curl -fsS https://gist.github.com/todo: get this url)"
 # 
-# 3. Clone your server's gitscripts repository on your local work station. 
+# 3. Clone your server's garuda repository on your local work station. 
 #    **Warning:** Don't clone the same repository as step 1, we are cloning 
 #    the repository created in step 
 # 
-#      $ git clone ssh://user@yourserver.com//path/to/gitscripts
+#      $ git clone ssh://user@yourserver.com//path/to/garuda
 #
 require 'rubygems'
 require 'highline/import'
@@ -49,14 +49,14 @@ def system *args
 end
 
 puts
-ohai "I'm going to install gitscripts to this directory:"
+ohai "I'm going to install garuda to this directory:"
 pwd = `pwd`.chomp
-puts "\n  #{pwd}/gitscripts\n\n"
+puts "\n  #{pwd}/garuda\n\n"
 confirm = ask("#{Tty.blue}Would you like me to continue? (yes/no):#{Tty.reset} "){ |q| q.echo = true }
 abort unless confirm.downcase == ('yes' || 'y')
 
-system "git clone ssh://rpflorence@raflorence.net/~/git/gitscripts.git"
-Dir.chdir('gitscripts')
+system "git clone git@github.com:rpflorence/garuda.git"
+Dir.chdir('garuda')
 File.rename('.git/hooks/post-receive.sample', '.git/hooks/post-receive') if File.exists?('.git/hooks/post-receive.sample')
 system "chmod +x .git/hooks/post-receive"
 system "git config receive.denyCurrentBranch ignore"
@@ -149,7 +149,7 @@ puts "#{Tty.red}Next steps:#{Tty.reset}"
 puts
 puts "  1. Clone this repository on your local machine"
 puts
-puts "     git clone ssh://user@example.net/#{pwd}/gitscripts"
+puts "     git clone ssh://user@example.net/#{pwd}/garuda"
 puts 
 puts "  2. Edit the config.yml and repos.yml files"
 puts
@@ -157,5 +157,5 @@ puts "  3. Commit and push your changes."
 puts
 puts "     git commit -a -m 'updates'\n     git push origin master"
 puts
-puts "#{Tty.white}Thanks for using gitscripts, please use github issues for any bugs#{Tty.reset}"
+puts "#{Tty.white}Thanks for using garuda, please use github issues for any bugs#{Tty.reset}"
 puts

@@ -57,7 +57,7 @@ Garuda is simply a git repository on your server, installed anywhere you want. I
 
 2. Copy and paste this:
 
-		$ ruby -e "$(curl -fsS https://gist.github.com/4931616e67a28849747e)"
+		$ ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/.app/admin/install.rb)"
 
 	Go ahead and `ls` to see what was installed.
 
