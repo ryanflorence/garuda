@@ -14,22 +14,22 @@ Example
 
 In the `repos.yml` file you define some things about your repositories:
 
-	example.com:
-    heads:
-      master:
-        script: rsync
-        destination: user@example.com:~/production
-      develop:
-        script: ftp
-        server: 12.345.678.91
-        user: username
-        password: password
-        destination: './dev.example.com'
-        os: windows
-    tags:
-      '^RC.+':
-        script: rsync
-        destination: user@example.com:~/stage
+    example_repo:
+      heads:
+        master:
+          script: rsync
+          destination: user@example.com:~/production
+        develop:
+          script: ftp
+          server: 12.345.678.91
+          user: username
+          password: password
+          destination: './dev.example.com'
+          os: windows
+      tags:
+        '^RC.+':
+          script: rsync
+          destination: user@example.com:~/stage
 
 Now, whenever a developer pushes to master in example.com.git:
 
