@@ -77,10 +77,19 @@ Garuda is administered completely with git.  You shouldn't ever edit the reposit
 		$ git commit -a -m 'updated configurations'
 		$ git push origin master
 
+How it works
+------------
+
+The server's garuda repository has a post-receive hook that 1) resets the head of itself so your pushes are reflected, and 2) writes a post-receive hook to each of the repositories specified in `repos.yml`.
+
+When the repositories in `repos.yml` are pushed to, the post-receive hook there figures out the refs and then runs all the scripts specified in both `config.yml` and `repos.yml`, as well as any `local_scripts` defined for your repository in `config.yml`.
+
 Writing your own scripts
 ------------------------
 
 Place any scripts you want to run in /bin.  The /lib directory is available as a place to put scripts that aren't called directly but used in the bin scripts.
+
+This section will eventually have a lot of documentation. Garuda sets several variables to make writing your own bin scripts a snap.  For now check out the source of the script that is run whenever a repository is pushed to:  [`.app/run`](http://github.com/rpflorence/garuda/blob/master/.app/run)
 
 License
 -------

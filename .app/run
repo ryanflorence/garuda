@@ -2,13 +2,13 @@
 
 # This script sets up some global variables
 #
-# ENV['repository'] || REPOSITORY - the repository being pushed
-# ENV['branch'] || BRANCH - the branch pushed
-# CONFIG - the global build script config file
-
-# EXTRACTOR - deployer objects, see lib/deployer.rb and lib/git_extractor
+# REPOSITORY || ENV['repository'] - The receiving repository
+# REF_TYPE || ENV['ref_type'] - the ref type: heads || tags
+# REF_NAME || ENV['ref_name'] - the ref name (branch of tag): master, RC2, v2.4.1
+# CONFIG - config.yml hash
+# REPOS_CONFIG - repos.yml hash
+# EXTRACTOR - Deployer object, see lib/deployer.rb and lib/git_extractor
 #
-# then it runs a bunch of scripts
 
 Dir.chdir(File.dirname(__FILE__))
 Dir.chdir('..')
