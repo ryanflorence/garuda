@@ -1,0 +1,46 @@
+Dir.chdir(File.dirname(__FILE__))
+Dir.chdir('..')
+
+task :default => [:testall]
+
+task :testall => [
+  :test_git_extractor,
+  :test_rsync,
+  :test_multi_ftp
+]
+
+task :create_test_repo do
+  `mkdir test_repo; cd test_repo; git init; echo 'test' > testfile; git add testfile; git commit -m 'testing'; cd ..`
+end
+
+task :remove_test_repo do
+  `rm -rf test_repo`
+end
+
+task :create_destination do
+  `mkdir test_destination`
+end
+
+task :remove_destination do
+  `rm -rf test_destination`
+end
+
+task :test_git_extractor do
+  Rake::Task["create_test_repo"].execute
+  ruby "tests/git_extractor_test.rb"
+  Rake::Task["remove_test_repo"].execute
+end
+
+task :test_rsync do
+  Rake::Task["create_test_repo"].execute
+  Rake::Task["create_test_repo"].execute
+  ruby 'tests/rsync_test.rb'
+  Rake::Task["remove_test_repo"].execute
+  Rake::Task["remove_destination"].execute
+end
+
+task :test_multi_ftp do
+  Rake::Task["create_test_repo"].execute
+  ruby 'tests/multi_ftp_test.rb'
+  Rake::Task["remove_test_repo"].execute
+end

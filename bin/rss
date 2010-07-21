@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+#
+# You need a `url` defined in repos.yml, i.e.
+#
+# example_repo:
+#  heads:
+#    master:
+#      url: http://example.com
+
+
+# read the url from the config
+url = REPOS_CONFIG[REPOSITORY]['url'] ? "#{REPOS_CONFIG[REPOSITORY]['url']}/git.rss" : "http://example.com/git.rss"
+# write the file
+`ruby lib/gitrss.rb #{CONFIG['root']}/#{REPOSITORY}.git #{REF_NAME} #{url} #{REPOSITORY} > #{EXTRACTOR.extracted_path}/gitlog.rss`

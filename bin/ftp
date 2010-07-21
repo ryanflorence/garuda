@@ -1,0 +1,23 @@
+#!/usr/bin/ruby
+
+# Sample config for ftp
+=begin
+example_repo:
+  src: htdocs
+  heads:
+    master:
+      script: ftp
+      server: example.com
+      user: username
+      password: password
+      destination: './htdocs'
+      os: windows
+=end
+
+require 'lib/multi_ftp'
+
+EXTRACTOR.remove_tar
+params = EXTRACTOR.ref_data
+ftp = MultiFTP.new(params['os'] || 'windows')
+ftp.setup(params['server'], params['user'], params['password'])
+ftp.go_send(EXTRACTOR.extracted_path, params['destination'])

@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+# Sample config
+=begin
+example_repo:
+  src: htdocs/ #trailing slash to expand it's contents, not upload the directory
+  heads:
+    master:
+      script: rsync
+      destination: user@example.com:~/htdocs
+=end
+
+require 'lib/rsync.rb'
+
+EXTRACTOR.remove_tar
+rsync = Rsync.new
+rsync.run({
+  'dst' => EXTRACTOR.ref_data['destination'],
+  'src' => EXTRACTOR.extracted_path
+})
