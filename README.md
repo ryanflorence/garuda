@@ -3,7 +3,7 @@ Garuda - Git deployment for the over-served
 
 Garuda is a git-hosting-server-side ruby library of scripts used to deploy multiple repositories to multiple web servers.  It lives on the server where your repositories are hosted and requires no client or destination server software.  It is ideal for web shops that maintain numerous websites.
 
-Once Garuda is installed and configured, deployment is automatic whenever a developer pushes a branch or tag that matches against your configuration files--so you can stop delaying QA or releases over deployment (not to mention giving all your client's passwords out to every developer in the shop.)
+Once Garuda is installed and configured, deployment is automatic whenever a developer pushes a branch or tag that matches against your configuration files--so you can stop delaying QA or releases over deployment (not to mention giving all your clients' passwords out to every developer in the shop.)
 
 It isn't just for deployment either.  You can set up scripts to email your team or generate an rss feed somewhere whenever a repository receives new commits.
 
@@ -31,7 +31,7 @@ In the `repos.yml` file you define some things about your repositories:
           script: rsync
           destination: user@example.com:~/stage
 
-Now, whenever a developer pushes to master in example.com.git:
+Now, whenever a developer pushes to master in example_repo.git:
 
 	$ git push origin master
 
