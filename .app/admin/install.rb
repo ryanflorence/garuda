@@ -55,7 +55,7 @@ puts "\n  #{pwd}/garuda\n\n"
 confirm = ask("#{Tty.blue}Would you like me to continue? (yes/no):#{Tty.reset} "){ |q| q.echo = true }
 abort unless confirm.downcase == ('yes' || 'y')
 
-system "git clone git@github.com:rpflorence/garuda.git"
+system "git clone git://github.com/rpflorence/garuda.git"
 Dir.chdir('garuda')
 File.rename('.git/hooks/post-receive.sample', '.git/hooks/post-receive') if File.exists?('.git/hooks/post-receive.sample')
 system "chmod +x .git/hooks/post-receive"
