@@ -28,7 +28,7 @@ class GitTagsRss < GitData
   
   def get_items
     items = []
-    tags = get_tags(true, true)
+    tags = get_tags(true, true).reverse
     tags.each do |tag|
       item = {}
       item['title']       = "Tag ref: #{tag['ref']} by #{tag['tagger'].gsub('<', '(').gsub('>',')')}"
