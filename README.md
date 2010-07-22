@@ -50,14 +50,32 @@ Installation
 
 Garuda is simply a git repository on your server, installed anywhere you want. If you don't want it later, just remove the directory.  It assumes you use git as your scm, and that you put all of your repositories in one place (since you should be using gitolite or gitosis anyway.)
 
+### Installing into a Gitosis / Gitolite setup
+
+1. Add 'garuda' to the conf file in the admin repository, then push.
+
+2. Clone garuda on your local machine
+
+        $ git clone git@yourhost.com:garuda
+
+3. **On the server**: Navigate to where your repositories are located (probably in  `/home/git/` or `/home/git/repositories`) and then run this command:
+
+        ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/.app/admin/install.rb)"
+
+4. **On your workstation**: Pull the changes to your local garuda clone
+
+        $ git pull origin master
+
+### Other install
+
 1. On the server where your repositories are hosted, navigate to the directory where you want to install Garuda.  It can be, but doesn't have to be, the same directory as your repositories.  Make sure your user has permission to create files.
 
 		$ ssh user@yourserver.com
 		$ cd desired/path/
 
-2. Copy and paste this:
+2. Copy and paste this into the terminal:
 
-		$ ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/.app/admin/install.rb)"
+		ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/.app/admin/install.rb)"
 
 	Go ahead and `ls` to see what was installed.
 
@@ -80,7 +98,7 @@ Garuda is administered completely with git.  You shouldn't ever edit the reposit
 How it works
 ------------
 
-The server's garuda repository has a post-receive hook that 1) resets the head of itself so your pushes are reflected, and 2) writes a post-receive hook to each of the repositories specified in `repos.yml`.
+The server's garuda repository has a post-receive hook that writes a post-receive hook to each of the repositories specified in `repos.yml`.
 
 When the repositories in `repos.yml` are pushed to, the post-receive hook there figures out the refs and then runs all the scripts specified in both `config.yml` and `repos.yml`, as well as any `local_scripts` defined for your repository in `config.yml`.
 
