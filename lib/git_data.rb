@@ -1,14 +1,9 @@
-# Adapted by Ryan Florence (http://ryanflorence.com) 
-# original by Chris Dinger: http://www.houseofding.com/2009/03/create-an-rss-feed-of-your-git-commits/
+# GitData by Ryan Florence (http://ryanflorence.com) 
+# Tangent off of a script by Chris Dinger: http://www.houseofding.com/2009/03/create-an-rss-feed-of-your-git-commits/
 # 
-# Takes one, two, or three arguments
-# 1. Repository path (required) - the path to the repository
-# 2. The url to put as the <link> for both channel and items
-# 3. the repository name, defaults to directory name of the repository
-#
-# Command line usage:
-# ruby gitrss.rb /path/to/repo > feed.rss
-# ruby git_tags_rss.rb /Users/rpflo/OpenSource/SlideShow
+# Parses some git messages into ruby objects
+
+
 require 'time'
 
 class GitData
