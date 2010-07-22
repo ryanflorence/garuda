@@ -10,7 +10,6 @@ class GitDataTest < Test::Unit::TestCase
     end
 
     should 'get the tags' do
-      
       assert_equal 1, 1
     end
     

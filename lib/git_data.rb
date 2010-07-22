@@ -28,11 +28,12 @@ class GitData
     
     # parse the tag notes and store the data
     tag_refs.each_with_index do |tag, i|
-      notes = `git show --stat #{tag}`
-      date  = get_date notes
-      time  = Time.parse date
-      rev   = get_rev notes
-      tags << { 'ref' => tag, 'date' => date, 'rev' => rev, 'time' => time }
+      notes     = `git show --stat #{tag}`
+      tagger    = get_tagger notes
+      date      = get_date notes
+      time      = Time.parse date
+      rev       = get_rev notes
+      tags << { 'ref' => tag, 'date' => date, 'rev' => rev, 'time' => time, 'tagger' => tagger }
     end
     # Sort the tags by date
     tags.sort!{ |x,y| x['time'] <=> y['time'] } if sort_by_date
@@ -72,6 +73,10 @@ private
   
   def get_rev(notes)
     notes.gsub(/^.*commit /ms, '').gsub(/\n.*$/ms, '')
+  end
+
+  def get_tagger(notes)
+    notes.match(/Tagger:/) ? notes.gsub(/^.*Tagger: /ms, '').gsub(/\n.*$/ms, '') : 'Anonymous'
   end
   
   def get_author(notes)

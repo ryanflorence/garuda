@@ -11,4 +11,4 @@
 # read the url from the config
 url = REPOS_CONFIG[REPOSITORY]['url'] ? "#{REPOS_CONFIG[REPOSITORY]['url']}/git.rss" : "http://example.com/git.rss"
 # write the file
-`ruby lib/gitrss.rb #{CONFIG['root']}/#{REPOSITORY}.git #{REF_NAME} #{url} #{REPOSITORY} > #{EXTRACTOR.extracted_path}/gitlog.rss`
+`ruby lib/gitrss.rb #{CONFIG['repositories']}/#{REPOSITORY}.git #{REF_NAME} #{url} #{REPOSITORY} > #{EXTRACTOR.extracted_path}/gitlog.rss`

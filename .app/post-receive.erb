@@ -20,5 +20,5 @@ stdins.each do |str|
   ENV['ref_type'] = refs[1] # tags || heads (branch)
   ENV['ref_name'] = refs[2] # develop, 1.4 etc.
   
-  load "<%= pwd %>/.app/run"
+  load "<%= pwd %>/bin/run"
 end

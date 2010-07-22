@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'erb'
+require 'lib/git_tags_rss'
+
+url = REPOS_CONFIG[REPOSITORY]['url'] ? "#{REPOS_CONFIG[REPOSITORY]['url']}/gittags.rss" : "http://example.com/gittags.rss"
+
+# the template
+rxml = ERB.new(File.read 'lib/rss.xml.erb')
+# the page
+tags = GitTagsRss.new("#{CONFIG['repositories']}/#{REPOSITORY}.git")
+result = rxml.result tags.get_binding
+# write the file
+File.open("#{EXTRACTOR.extracted_path}/gittags.rss", 'w') {|f| f.write(result)}

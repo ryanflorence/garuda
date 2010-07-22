@@ -18,7 +18,7 @@ require 'lib/deployer.rb'
 # Check if script was called manually instead of from hook
 unless ENV['repository']
   ENV['repository'] = ARGV[0]
-  ENV['ref_type'] = ARGV[1] || 'heads'
+  ENV['ref_type'] = ARGV[1]
   ENV['ref_name'] = ARGV[2]
 end
 
@@ -74,7 +74,7 @@ REPOS_CONFIG[REPOSITORY][REF_TYPE].each do |key, data|
 
     # Run scripts under `pre-deploy` in the config file
     CONFIG['pre-deploy']['all'].each{ |script| load "bin/#{script}" } if CONFIG['pre-deploy'] and CONFIG['pre-deploy']['all']
-    CONFIG['pre-deploy'][REF_TYPE][key].each{ |script| load "bin/#{script}" } if CONFIG['pre-deploy'] and CONFIG['pre-deploy'][REF_TYPE][key]
+    CONFIG['pre-deploy'][REF_TYPE][key].each{ |script| load "bin/#{script}" } if CONFIG['pre-deploy'] and CONFIG['pre-deploy'][REF_TYPE] and CONFIG['pre-deploy'][REF_TYPE][key]
       
     # Run deployment scripts
     REPOS_CONFIG[REPOSITORY][ENV['ref_type']][key]['script'].each { |script| load "bin/#{script}" }

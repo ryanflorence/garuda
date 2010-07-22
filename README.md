@@ -89,7 +89,7 @@ Writing your own scripts
 
 Place any scripts you want to run in /bin.  The /lib directory is available as a place to put scripts that aren't called directly but used in the bin scripts.
 
-This section will eventually have a lot of documentation. Garuda sets several variables to make writing your own bin scripts a snap.  For now check out the source of the script that is run whenever a repository is pushed to:  [`.app/run`](http://github.com/rpflorence/garuda/blob/master/.app/run)
+This section will eventually have a lot of documentation. Garuda sets several variables to make writing your own bin scripts a snap.  For now check out the source of the script that is run whenever a repository is pushed to:  [`bin/run`](http://github.com/rpflorence/garuda/blob/master/bin/run)
 
 License
 -------

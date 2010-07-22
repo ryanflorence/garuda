@@ -16,10 +16,9 @@ example:
       destination: ./public_html
       local_scripts: build_scripts # path *in* the repo that gets opened, each script inside is then loaded, optional ofc
     develop:
-      master:
-        url: http://example.com
-        script: rsync
-        destination: user@example.com:~/public_html
+      url: http://example.com
+      script: rsync
+      destination: user@example.com:~/public_html
   tags:
     '^RC.+':
       url: http://example.com
