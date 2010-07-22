@@ -50,7 +50,7 @@ Installation
 
 Garuda is simply a git repository on your server, installed anywhere you want. If you don't want it later, just remove the directory.  It assumes you use git as your scm, and that you put all of your repositories in one place (since you should be using gitolite or gitosis anyway.)
 
-1. On the server where your repositories are hosted, navigate to the directory where you want to install Garuda.  It can be, but doesn't have to be, the same directory as your repositories.
+1. On the server where your repositories are hosted, navigate to the directory where you want to install Garuda.  It can be, but doesn't have to be, the same directory as your repositories.  Make sure your user has permission to create files.
 
 		$ ssh user@yourserver.com
 		$ cd desired/path/

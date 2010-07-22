@@ -46,7 +46,7 @@ config        = YAML::load(File.open('config.yml'))
 repo_config   = YAML::load(File.open('repos.yml'))
 
 # Create template
-template      = File.open('app/post-receive.erb')
+template      = File.open('.app/post-receive.erb')
 erb           = ERB.new(template, 0, "%<>")
 pwd           = `pwd`.chomp
 hook_contents = erb.result
