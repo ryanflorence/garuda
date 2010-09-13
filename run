@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+# Requires 3 arguments
+# ./run [path to yaml] [ref type]  [ref name]
+
+require 'rubygems'
+require 'yaml'
+require 'lib/runner.rb'
+
+CONFIG   = YAML::load(File.open(ARGV[0]))[ARGV[1]][ARGV[2]]
+Runner.new(CONFIG, 'bin/').run
