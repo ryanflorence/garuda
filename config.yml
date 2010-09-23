@@ -1,7 +1,7 @@
 # paths are relative to this file
 
 # path the git repositories
-repos: tests/repositories
+repos: tests/tmp
 
 #path to the config files for each repository
 config: config

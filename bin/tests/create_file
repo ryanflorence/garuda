@@ -1,4 +1,5 @@
 #!/bin/sh
 # tests that the script is successfully setting
 # environment variables
-echo "$foo" > ../tests/foo
+echo "$foo" > foo
+echo File created
