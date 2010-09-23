@@ -164,11 +164,13 @@ puts "  1. Clone this repository on your local machine"
 puts
 puts "     git clone ssh://user@example.net/#{pwd}/garuda"
 puts 
-puts "  2. Edit the config.yml and repos.yml files"
+puts "  2. Create config files with names that match their repositories in config/"
 puts
-puts "  3. Commit and push your changes."
+puts "     config/awesome.yml  # => matches awesome.git"
+puts
+puts "  3. Commit and push your changes"
 puts
 puts "     git commit -a -m 'updates'\n     git push origin master"
 puts
-puts "#{Tty.white}Thanks for using garuda, please use github issues for any bugs#{Tty.reset}"
+puts "#{Tty.white}Thanks for using Garuda, please use github issues for any bugs#{Tty.reset}"
 puts
