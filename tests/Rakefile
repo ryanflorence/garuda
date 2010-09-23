@@ -1,5 +1,6 @@
 require 'yaml'
 
+# tests run at the garuda/ root
 Dir.chdir(File.dirname(__FILE__))
 Dir.chdir('..')
 
@@ -7,7 +8,8 @@ task :default => [:testall]
 task :testall => [
   :test_languages, 
   :test_garuda,
-  :test_run_script
+  :test_run_script,
+  :test_simple_install
 ]
 
 
@@ -28,6 +30,17 @@ task :test_run_script do
   Rake::Task["remove_repo"].execute
 end
 
+task :test_simple_install do
+  Rake::Task["create_install_env"].execute
+  ruby  'tests/simple_install_test.rb'
+  Rake::Task["cleanup"].execute
+end
+
+task :test_simple_install_garuda_hook do
+  Rake::Task["create_install_env"].execute
+  ruby  'tests/simple_install_garuda_hook_test.rb'
+  Rake::Task["cleanup"].execute
+end
 
 
 task :create_repo do
@@ -45,9 +58,24 @@ task :remove_repo do
   Dir.chdir('..')
 end
 
+task :create_install_env do
+  `cd tests/tmp 
+    mkdir server 
+    cd server
+    mkdir test.git 
+    cd test.git
+    git --bare init 
+    cd ../..
+    mkdir local
+    cd local
+    git clone ../server/test.git
+    cd ../../..`
+end
+
 task :cleanup do
   Rake::Task["remove_repo"].execute
   `rm -rf tmp/*`
+  `rm -rf tests/tmp/*`
 end
 
 
