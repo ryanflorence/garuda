@@ -116,7 +116,7 @@ system "umask 002 && git reset --hard"
 # Create template
 template      = File.open('.install/post-receive.erb')
 erb           = ERB.new(template, 0, "%<>")
-pwd           = `pwd`.chomp
+garuda_dir    = `pwd`.chomp
 hook_contents = erb.result
 
 # install the post-receive script on all the repositories
