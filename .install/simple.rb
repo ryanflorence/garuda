@@ -7,17 +7,8 @@
 
 # 2. Run this in the terminal
 # 
-#      $ ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/.install/install.rb)"
+#      $ ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/.install/simple.rb)"
 # 
-# 3. Clone your server's garuda repository on your local work station. 
-#    **Warning:** Don't clone the same repository as step 1, we are cloning 
-#    the repository created in step 
-# 
-#      $ git clone ssh://user@yourserver.com//path/to/garuda
-#
-# 4. Update config.yml and repos.yml and push
-#
-#      $ git push origin master
 #
 require 'rubygems'
 

@@ -5,7 +5,7 @@ require 'lib/garuda.rb'
 
 # rake task `create_test_repo` creates the test.git repository for this test
 
-class RunTest < Test::Unit::TestCase
+class GarudaTest < Test::Unit::TestCase
   context "A Garuda instance" do
 
     setup do

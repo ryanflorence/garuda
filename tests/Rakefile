@@ -5,34 +5,19 @@ Dir.chdir(File.dirname(__FILE__))
 Dir.chdir('..')
 @root = Dir.pwd
 
-# If you're going to run individual tasks, make sure to run `rake cleanup` after
-task :default => [:test_all_gito]
-
-task :test_all_simple => [
-  :test_simple_install,
-  :test_simple_install_garuda_hook,
-  :test_post_receive_hook,
-  :cleanup
-]
-
-task :test_all_gito => [
-  :test_gito_install,
-  :test_gito_install_garuda_hook,
-  :test_post_receive_hook_gito,
-  :cleanup
-]
-
-task :test_garuda => [
-  :test_languages, 
+task :default => [:testall]
+task :testall => [
   :test_garuda,
-  :test_run_script
+  :test_simple,
+  :test_gito
 ]
 
 
-# "Local" tests
+# Tests
+# -----------------------------------------------------------------------
 
 desc 'Tests local stuff not involving installation'
-task :test_languages do
+task :test_garuda do
   ruby 'tests/languages_test.rb'
   Rake::Task["create_repo"].execute
   ruby 'tests/garuda_test.rb'
@@ -40,10 +25,23 @@ task :test_languages do
   Rake::Task["remove_repo"].execute
 end
 
-
-
 desc 'Runs the simple Installation tests'
-task :test_simple do
+task :test_simple => :simple_env do
+  ruby 'tests/simple_install_test.rb'
+  Rake::Task['cleanup'].execute
+end
+
+desc 'Runs the gitolite / gitosis installation tests'
+task :test_gito => :gito_env do
+  ruby 'tests/gito_install_test.rb'
+  Rake::Task['cleanup'].execute
+end
+
+# Quick testing environments
+# -----------------------------------------------------------------------
+
+desc 'Simple: Install garuda into a simple test environment'
+task :simple_env do
   # create test environment
   `mkdir tests/tmp/server; cd tests/tmp/server
   mkdir test.git; cd test.git; git --bare init
@@ -63,68 +61,32 @@ task :test_simple do
   
   # push to remote/test.git
   `cd tests/tmp/local/test; touch foo; git add .; git commit -m 'nothing'; git push origin master`
-  Dir.chdir @root
+end
+
+desc 'Gito: Install Garuda into a gitolite / gitosis environment'
+task :gito_env do
+  # create test environment
+  `mkdir tests/tmp/server; cd tests/tmp/server
+  mkdir test.git; cd test.git; git --bare init
+  cd ..; mkdir garuda.git; cd garuda.git; git --bare init
+  cd ../..; mkdir local; cd local; git clone ../server/test.git`
+  Dir.chdir(@root)
   
-  ruby 'tests/simple_install_test.rb'
-  ruby 'tests/simple_install_garuda_hook_test.rb'
-  ruby 'tests/post_receive_hook_test.rb'
-  
-  Rake::Task['cleanup'].execute
-end
-
-
-
-
-# Gitolite / Gitosis tests
-desc 'Gito Install: Tests for successfull installation'
-task :test_gito_install => [:install_garuda_gito] do |t|
-  ruby  'tests/gito_install_test.rb'
-end
-
-desc "Gito Install: Tests if the remote/test hook was installed"
-task :test_gito_install_garuda_hook => [:push_to_garuda_gito] do |t|
-  ruby  'tests/gito_install_garuda_hook_test.rb'
-end
-
-desc "Tests if `remote/test.git/hooks/post-receive` ran succesfully"
-task :test_post_receive_hook_gito => [:push_to_test] do |t|
-  ruby 'tests/post_receive_hook_test.rb'
-end
-
-desc "Pushes `local/test` => `remote/test.git`"
-task :push_to_test => [:push_to_garuda] do |t|
-  
-end
-
-
-
-# Gitolite / Gitosis install tasks
-
-desc "Gito Installation: Tests for successful installation"
-task :install_garuda_gito => [:create_install_env] do |t|
+  # install garuda
   Dir.chdir('tests/tmp/server')
   load "#@root/.install/gito.rb"
   Dir.chdir @root
-end
-
-desc "Gito Installation: Pushes `local/garuda` => `remote/garuda.git`"
-task :push_to_garuda_gito => [:install_garuda_gito] do |t|
+  
+  # clone to remote/garuda, commit to remote/garuda
   `cd tests/tmp/local; git clone ../server/garuda.git
   cd garuda; touch foo; git add .; git commit -m 'nothing'; git push origin master`
   Dir.chdir @root
-end
-
-desc "Pushes `local/test` => `remote/test.git`"
-task :push_to_test_gito => [:push_to_garuda] do |t|
+  
+  # push to remote/test.git
   `cd tests/tmp/local/test; touch foo; git add .; git commit -m 'nothing'; git push origin master`
   Dir.chdir @root
 end
 
-
-
-
-
-# shared install tests
 
 desc 'cleans up the mess'
 task :cleanup do
@@ -136,11 +98,8 @@ end
 
 
 
-
-
-
-# "local" test scripts
-
+# "local" test tasks
+# -----------------------------------------------------------------------
 desc "Creates an empty repository for this garuda instance to test against"
 task :create_repo do
   Dir.chdir('..')
@@ -161,6 +120,7 @@ end
 
 
 # Old stuffz
+# -----------------------------------------------------------------------
 task :create_destination do
   `mkdir test_destination`
 end

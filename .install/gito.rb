@@ -9,15 +9,8 @@
 
 # 3. Run this in the terminal (on the server)
 # 
-#      $ ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/.install/gito-install.rb)"
+#      $ ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/.install/gito.rb)"
 # 
-# 4. Pull changes from gitosis / gitolite to your local clone
-# 
-#      $ git pull origin master
-#
-# 5. Update config.yml and repos.yml and push
-#
-#      $ git push origin master
 #
 require 'rubygems'
 
