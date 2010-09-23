@@ -4,11 +4,11 @@ Dir.chdir('..')
 config = YAML::load(File.open('config.yml'))
 
 task :default => [:testall]
-task :testall => [:test_run]
+task :testall => [:test_garuda]
 
-task :test_run do
+task :test_garuda do
   Rake::Task["create_test_repo"].execute
-  ruby 'tests/run_test.rb'
+  ruby 'tests/garuda_test.rb'
   Rake::Task["remove_test_repo"].execute  
 end
 
