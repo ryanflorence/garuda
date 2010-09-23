@@ -2,7 +2,7 @@ require 'rubygems'
 require 'test/unit'
 require 'shoulda'
 
-# rake task `create_test_repo` creates the test.git repository for this test
+# see rake task `create_install_env`, it installs everything and stuff
 
 class SimpleInstallTest < Test::Unit::TestCase
   
@@ -16,7 +16,6 @@ class SimpleInstallTest < Test::Unit::TestCase
 
     should "clone the garuda repository" do
       Dir.chdir @server
-      load "../../../.install/simple.rb"
       assert File.directory?('garuda')
       Dir.chdir @pwd
     end

@@ -3,6 +3,8 @@ require 'yaml'
 # tests run at the garuda/ root
 Dir.chdir(File.dirname(__FILE__))
 Dir.chdir('..')
+@root = Dir.pwd
+
 
 task :default => [:testall]
 task :testall => [
@@ -45,31 +47,53 @@ end
 
 task :create_repo do
   Dir.chdir('..')
-  `mkdir test.git; cd test.git; git --bare init; cd ..`
-  `git clone test.git; cd test; echo 'test' > testfile; git add testfile; git commit -m 'testing'; git push origin master; cd ..`
-  Dir.chdir(File.dirname(__FILE__))
-  Dir.chdir('..')
+  `mkdir test.git; cd test.git; git --bare init
+  cd ..; git clone test.git; cd test 
+  echo 'test' > testfile; git add testfile; git commit -m 'testing'; git push origin master;`
+  Dir.chdir(@root)
 end
 
 task :remove_repo do
   Dir.chdir('..')
   `rm -rf test; rm -rf test.git`
-  Dir.chdir(File.dirname(__FILE__))
-  Dir.chdir('..')
+  Dir.chdir(@root)
 end
 
 task :create_install_env do
-  `cd tests/tmp 
-    mkdir server 
-    cd server
-    mkdir test.git 
-    cd test.git
-    git --bare init 
-    cd ../..
-    mkdir local
-    cd local
-    git clone ../server/test.git
-    cd ../../..`
+  # creates: 
+  #   test/
+  #     tmp/
+  #       server/
+  #         test.git
+  #       local/
+  #         test
+  `mkdir tests/tmp/server; cd tests/tmp/server
+  mkdir test.git; cd test.git; git --bare init
+  cd ../..; mkdir local; cd local; git clone ../server/test.git`
+  Dir.chdir(@root)
+end
+
+task :install_garuda => [:create_install_env] do |t|
+  Dir.chdir('tests/tmp/server')
+  load "#@root/.install/simple.rb"
+  Dir.chdir @root
+end
+
+task :push_to_garuda => [:install_garuda] do |t|
+  # push from local garuda to server garuda so it installs the hooks 
+  # on the test.git remote repository
+  `cd tests/tmp/local; git clone ../server/garuda`
+  `cd garuda; touch foo; git add .; git commit -m 'nothing'; git push origin master`
+  # get back to where we started
+  Dir.chdir @root
+end
+
+task :push_to_test => [:push_to_garuda] do |t|
+  # update the local test repository and push to the remote test.git repository
+  # this will make the installed hook run in test.git/hooks
+  `cd tests/tmp/local/test; git touch foo; git add .; git commit -m 'nothing'; git push origin master`
+  # get back to where we started
+  Dir.chdir @root
 end
 
 task :cleanup do
@@ -77,7 +101,6 @@ task :cleanup do
   `rm -rf tmp/*`
   `rm -rf tests/tmp/*`
 end
-
 
 
 # Old stuffz
