@@ -1,0 +1,9 @@
+heads:
+  master:
+    'tests/ruby-test':
+      arg1: 'First arg'
+      arg2: 'Second arg'
+  develop:
+    test:
+      src: '#{tree}/'
+      dst: 'rpflorence@raflorence.net:/home/rpflorence/test'

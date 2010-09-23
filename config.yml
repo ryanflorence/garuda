@@ -1,19 +1,7 @@
-(BS
-    
-    
-    ('H1' ,"Battlestar Galactica DVDs")
-    
-    ('P' ,"Best.  Show.  Evar. ")
-    
-    ('A href=#' ,BS ('IMG src="http://bit.ly/WinAylott"') ('BR')
-        ('' ,"View larger image") )
-    
-    ('FORM method=GET' ,BS
-        
-        ('LABEL for=quantity' ,"Quantity")
-        ('INPUT name=quantity value=1')
-        
-        ('INPUT type=submit value="Add to Cart"')
-    )
-    
-)
+# paths are relative to this file
+
+# path the git repositories
+repos: tests/repositories
+
+#path to the config files for each repository
+config: config
