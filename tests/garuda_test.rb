@@ -24,10 +24,9 @@ class RunTest < Test::Unit::TestCase
     
     should 'run the scripts and set environment variables' do
       @garuda.clone_repository.run
-      contents = File.read('tests/foo')
+      contents = File.read(@garuda.tree + '/foo')
       assert_equal "bar\n", contents
       @garuda.cleanup
-      File.unlink('tests/foo')
     end
     
   end

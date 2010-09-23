@@ -27,7 +27,7 @@ class Garuda
   end
   
   def run
-    Dir.chdir('bin')
+    Dir.chdir(@tree)
     # Can match multiple ref_types, so we loop them
     @config[@ref_type].each do |key, data|
       # check if our ref_type matches the key in the config file
@@ -45,14 +45,14 @@ class Garuda
             ENV[k] = v.to_s
           end
           # execute the script
-          system("./#{script}")
+          system("./../../../bin/#{script}")
           # clear ENV
           args.each { |k,v| ENV[k] = nil }
         end
       end
     end
     
-    Dir.chdir('..')
+    Dir.chdir('../../../')
     self
   end
   
