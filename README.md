@@ -8,6 +8,8 @@ Who can benefit from Garuda?
 Installation
 ------------
 
+  ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/.install/install.rb)"
+
 
 Writing scripts
 ---------------

@@ -5,13 +5,29 @@ require 'rubygems'
 require 'yaml'
 require 'erb'
 
-# run this script from garuda repository root
-Dir.chdir('..')
+class Array
+  def shell_s
+    cp = dup
+    first = cp.shift
+    cp.map{ |arg| arg.gsub " ", "\\ " }.unshift(first) * " "
+  end
+end
+ 
+def system *args
+  abort "Failed during: #{args.shell_s}" unless Kernel.system *args
+end
 
-# reset the working tree
+# reset the working tree - simple install
+Dir.chdir('..')
 puts "Resetting the working tree"
 ENV['GIT_DIR'] = '.git'
 system "umask 002 && git reset --hard"
+
+# reset clone - gitosis / gitolite install
+puts "Updating the clone's working tree"
+Dir.chdir('../garuda')
+ENV['GIT_DIR'] = '.git'
+system "umask 002 && git pull gito master"
 
 # Create template
 template      = File.open('.install/post-receive.erb')
@@ -42,7 +58,7 @@ Dir.open('config').each do |file|
 
       File.open(hook, 'w'){ |f| f.write(hook_contents) }
     else
-      warn "Repository #{repo} has a configuration in config/#{repo}.yml, but the repository doesn't exist in:"
+      puts "Repository #{repo} has a configuration in config/#{repo}.yml, but the repository doesn't exist in:"
       puts "Directory: #{base_dir}"
       puts
     end

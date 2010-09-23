@@ -20,7 +20,6 @@
 #      $ git push origin master
 #
 require 'rubygems'
-require 'highline/import'
 
 #src = "git@github.com:rpflorence/garuda.git"
 src = "ssh://rpflorence@raflorence.net/~/git/garuda.git"
@@ -59,8 +58,10 @@ puts
 ohai "I'm going to install garuda to this directory:"
 pwd = `pwd`.chomp
 puts "\n  #{pwd}/garuda\n\n"
-confirm = ask("#{Tty.blue}Would you like me to continue? (yes/no):#{Tty.reset} "){ |q| q.echo = true }
-abort unless confirm.downcase == ('yes' || 'y')
+puts
+puts "#{Tty.blue}Would you like me to continue? (type yes/no):#{Tty.reset} "
+#confirm = gets
+#abort unless confirm.chomp.downcase == ('yes' || 'y')
 
 system "git clone #{src}"
 Dir.chdir('garuda')
@@ -68,25 +69,14 @@ File.rename('.git/hooks/post-receive.sample', '.git/hooks/post-receive') if File
 system "chmod +x .git/hooks/post-receive"
 system "git config receive.denyCurrentBranch ignore"
 
+
+
 script = %q(#!/usr/bin/env ruby
-# this becomes the post-receive hook of the server's garuda repository, pasted as text into install.rb
+# this file is merely a "clipboard" to edit the hook and paste the text into the `simple.rb` install script
 
 require 'rubygems'
 require 'yaml'
 require 'erb'
-
-# run this script from garuda repository root
-Dir.chdir('..')
-
-module Tty extend self
-  def blue; bold 34; end
-  def white; bold 39; end
-  def red; underline 31; end
-  def reset; escape 0; end
-  def bold n; escape "1;#{n}" end
-  def underline n; escape "4;#{n}" end
-  def escape n; "\033[#{n}m" if STDOUT.tty? end
-end
 
 class Array
   def shell_s
@@ -95,21 +85,14 @@ class Array
     cp.map{ |arg| arg.gsub " ", "\\ " }.unshift(first) * " "
   end
 end
-
-def ohai *args
-  puts "#{Tty.blue}==>#{Tty.white} #{args.shell_s}#{Tty.reset}"
-end
-
-def warn warning
-  puts "#{Tty.red}Warning#{Tty.reset}: #{warning.chomp}"
-end
  
 def system *args
   abort "Failed during: #{args.shell_s}" unless Kernel.system *args
 end
 
 # reset the working tree
-ohai "Resetting the working tree"
+Dir.chdir('..')
+puts "Resetting the working tree"
 ENV['GIT_DIR'] = '.git'
 system "umask 002 && git reset --hard"
 
@@ -125,34 +108,36 @@ Dir.open('config').each do |file|
     repo     = file.gsub /\.yml$/, ''
     base_dir = "../#{repo}.git"
 
-    ohai "Updating hook for #{repo}"
+    puts "Updating hook for #{repo}"
 
     if File.exists? base_dir
       hook = "#{base_dir}/hooks/post-receive"
 
       unless File.exists? hook
-        ohai "Renaming #{base_dir}/hooks/post-receive.sample to #{base_dir}/hooks/post-receive"
+        puts "Renaming #{base_dir}/hooks/post-receive.sample to #{base_dir}/hooks/post-receive"
         File.rename("#{base_dir}/hooks/post-receive.sample", hook) 
       end
 
       unless File.executable? hook
-        ohai  "chmod +x #{hook}"
+        puts  "chmod +x #{hook}"
         system "chmod +x #{hook}"
       end
 
       File.open(hook, 'w'){ |f| f.write(hook_contents) }
     else
-      warn "Repository #{repo} has a configuration in config/#{repo}.yml, but the repository doesn't exist in:"
-      puts "Directory: #{Tty.white}#{base_dir}#{Tty.reset}"
+      puts "Repository #{repo} has a configuration in config/#{repo}.yml, but the repository doesn't exist in:"
+      puts "Directory: #{base_dir}"
       puts
     end
 
   end
 end
+
 )
 
-File.open('.git/hooks/post-receive', 'w'){ |f| f.write(script) }
 
+File.open('.git/hooks/post-receive', 'w'){ |f| f.write(script) }
+# get back out of garuda
 Dir.chdir('..')
 
 puts

@@ -15,7 +15,7 @@ class SimpleInstallGarudaHookTest < Test::Unit::TestCase
     end
     
     should "install the repo hook in test.git and make it executable" do
-      # tests if the remote/garuda hook ran by checking for the presence
+      # tests if the remote/garuda.git hook ran by checking for the presence
       # of post receive hooks on the remote/test.git repository
       Dir.chdir @server
       assert File.exists?('test.git/hooks/post-receive')
