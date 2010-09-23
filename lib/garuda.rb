@@ -16,6 +16,7 @@ class Garuda
   
   def clone_repository
     @tmp_dir = 'tmp/' + Time.now.strftime("%Y%m%d%H%M%S")
+    Dir.mkdir 'tmp' unless File.directory?('tmp')
     Dir.mkdir(@tmp_dir);
     Dir.chdir(@tmp_dir);
     # in /tmp/timestamp/
