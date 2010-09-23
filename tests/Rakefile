@@ -2,7 +2,6 @@ require 'yaml'
 
 Dir.chdir(File.dirname(__FILE__))
 Dir.chdir('..')
-config = YAML::load(File.open('config.yml'))
 
 task :default => [:testall]
 task :testall => [
@@ -17,37 +16,37 @@ task :test_languages do
 end
 
 task :test_garuda do
-  Rake::Task["create_test_repo"].execute
+  Rake::Task["create_repo"].execute
   ruby 'tests/garuda_test.rb'
-  Rake::Task["remove_test_repo"].execute  
+  Rake::Task["remove_repo"].execute
 end
 
 
 task :test_run_script do
-  Rake::Task["create_test_repo"].execute
+  Rake::Task["create_repo"].execute
   ruby 'tests/run_test.rb'
-  Rake::Task["remove_test_repo"].execute  
+  Rake::Task["remove_repo"].execute
 end
 
 
 
-task :create_test_repo do
-  Dir.chdir(config['repos'])
+task :create_repo do
+  Dir.chdir('..')
   `mkdir test.git; cd test.git; git --bare init; cd ..`
   `git clone test.git; cd test; echo 'test' > testfile; git add testfile; git commit -m 'testing'; git push origin master; cd ..`
   Dir.chdir(File.dirname(__FILE__))
   Dir.chdir('..')
 end
 
-task :remove_test_repo do
-  Dir.chdir(config['repos'])
+task :remove_repo do
+  Dir.chdir('..')
   `rm -rf test; rm -rf test.git`
   Dir.chdir(File.dirname(__FILE__))
   Dir.chdir('..')
 end
 
 task :cleanup do
-  Rake::Task["remove_test_repo"].execute
+  Rake::Task["remove_repo"].execute
   `rm -rf tmp/*`
 end
 
@@ -63,21 +62,21 @@ task :remove_destination do
 end
 
 task :test_git_extractor do
-  Rake::Task["create_test_repo"].execute
+  Rake::Task["create_repo"].execute
   ruby "tests/git_extractor_test.rb"
-  Rake::Task["remove_test_repo"].execute
+  Rake::Task["remove_repo"].execute
 end
 
 task :test_rsync do
-  Rake::Task["create_test_repo"].execute
-  Rake::Task["create_test_repo"].execute
+  Rake::Task["create_repo"].execute
+  Rake::Task["create_repo"].execute
   ruby 'tests/rsync_test.rb'
-  Rake::Task["remove_test_repo"].execute
+  Rake::Task["remove_repo"].execute
   Rake::Task["remove_destination"].execute
 end
 
 task :test_multi_ftp do
-  Rake::Task["create_test_repo"].execute
+  Rake::Task["create_repo"].execute
   ruby 'tests/multi_ftp_test.rb'
-  Rake::Task["remove_test_repo"].execute
+  Rake::Task["remove_repo"].execute
 end

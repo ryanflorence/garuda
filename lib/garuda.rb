@@ -11,18 +11,19 @@ class Garuda
     @repository = ENV['repository'] = ARGV[0] || ENV['repository']
     @ref_type   = ENV['ref_type']   = ARGV[1] || ENV['ref_type']
     @ref_name   = ENV['ref_name']   = ARGV[2] || ENV['ref_name']
-    @app_config = YAML::load(File.open('config.yml'))
-    @config     = YAML::load(File.open("#{@app_config['config']}/#{@repository}.yml"))
+    @config     = YAML::load(File.open("config/#{@repository}.yml"))
   end
   
   def clone_repository
     @tmp_dir = 'tmp/' + Time.now.strftime("%Y%m%d%H%M%S")
     Dir.mkdir(@tmp_dir);
     Dir.chdir(@tmp_dir);
-    `git clone ../../#{@app_config['repos']}/#{@repository}.git`
+    # in /tmp/timestamp/
+    `git clone ../../../#{@repository}.git`
     Dir.chdir(@repository)
     @tree = ENV['tree'] = Dir.pwd
-    Dir.chdir('../../../');
+    # go back to /
+    Dir.chdir('../../..');
     self
   end
   
