@@ -8,14 +8,8 @@ class PostReceiveHookTest < Test::Unit::TestCase
   
   context "The repository post receive hook" do
 
-    setup do
-      @pwd    = Dir.pwd
-      @server = @pwd + '/tests/tmp/server'
-      @local  = @pwd + '/tests/tmp/local'      
-    end
-
     should "Run the `run` script" do
-      
+      assert File.exists?("#{Dir.pwd}/tests/tmp/server/garuda/foo")
     end
 
   end

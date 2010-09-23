@@ -11,7 +11,9 @@ task :testall => [
   :test_languages, 
   :test_garuda,
   :test_run_script,
-  :test_simple_install
+  :test_simple_install,
+  :test_simple_install_garuda_hook,
+  :test_post_receive_hook
 ]
 
 
@@ -32,16 +34,16 @@ task :test_run_script do
   Rake::Task["remove_repo"].execute
 end
 
-task :test_simple_install do
-  Rake::Task["create_install_env"].execute
+task :test_simple_install => [:install_garuda] do |t|
   ruby  'tests/simple_install_test.rb'
-  Rake::Task["cleanup"].execute
 end
 
-task :test_simple_install_garuda_hook do
-  Rake::Task["create_install_env"].execute
+task :test_simple_install_garuda_hook => [:push_to_garuda] do |t|
   ruby  'tests/simple_install_garuda_hook_test.rb'
-  Rake::Task["cleanup"].execute
+end
+
+task :test_post_receive_hook => [:push_to_test] do |t|
+  ruby 'tests/post_receive_hook_test.rb'
 end
 
 
@@ -102,6 +104,8 @@ task :cleanup do
   `rm -rf tests/tmp/*`
 end
 
+# clean up!
+Rake::Task["cleanup"].execute
 
 # Old stuffz
 task :create_destination do
@@ -131,3 +135,5 @@ task :test_multi_ftp do
   ruby 'tests/multi_ftp_test.rb'
   Rake::Task["remove_repo"].execute
 end
+
+
