@@ -1,15 +1,16 @@
 require 'rubygems'
 require 'yaml'
 require 'fileutils'
-require 'lib/runner.rb'
 
 class Garuda
   
+  attr_accessor :tree
+  
   def initialize
     # set variables
-    @repository = ENV['repository'] = ARGV[0]
-    @ref_type   = ENV['ref_type']   = ARGV[1]
-    @ref_name   = ENV['ref_name']   = ARGV[2]
+    @repository = ENV['repository'] = ARGV[0] || ENV['repository']
+    @ref_type   = ENV['ref_type']   = ARGV[1] || ENV['ref_type']
+    @ref_name   = ENV['ref_name']   = ARGV[2] || ENV['ref_name']
     @app_config = YAML::load(File.open('config.yml'))
     @config     = YAML::load(File.open("#{@app_config['config']}/#{@repository}.yml"))
   end
@@ -26,7 +27,32 @@ class Garuda
   end
   
   def run
-    Runner.new(@config, @ref_type, @ref_name, 'bin/').run
+    Dir.chdir('bin')
+    # Can match multiple ref_types, so we loop them
+    @config[@ref_type].each do |key, data|
+      # check if our ref_type matches the key in the config file
+      if @ref_name.match(/#{key}/)
+        # matched, run the scripts under that ref_name
+        @config[@ref_type][key].each do |script, args|
+          puts "# Running script: " + script
+          args.each do |k,v|
+            # check if key already exists in ENV
+            if ENV[k] != nil
+              puts "ENV['#{k}'] is already defined as #{ENV[k]}, please change the name of your key. Aborting."
+              Process.exit();
+            end
+            # assign environment variable
+            ENV[k] = v.to_s
+          end
+          # execute the script
+          system("./#{script}")
+          # clear ENV
+          args.each { |k,v| ENV[k] = nil }
+        end
+      end
+    end
+    
+    Dir.chdir('..')
     self
   end
   

@@ -1,8 +1,7 @@
 heads:
   master:
-    'tests/ruby-test':
-      arg1: 'First arg'
-      arg2: 'Second arg'
+    'tests/create_file':
+      foo: 'bar'
   develop:
     test:
       src: '#{tree}/'
