@@ -11,8 +11,9 @@
 #   ENV['ref_name']   - name of the head or tag
 #   ENV['tree']       - path to the working tree of cloned repo
 #
-require 'lib/garuda.rb'
 # get to where we know we wanna be
 Dir.chdir(File.dirname(__FILE__))
+require 'lib/garuda.rb'
+
 garuda = Garuda.new
 garuda.clone_repository.run.cleanup

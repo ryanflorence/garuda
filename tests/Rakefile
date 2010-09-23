@@ -82,8 +82,8 @@ end
 task :push_to_garuda => [:install_garuda] do |t|
   # push from local garuda to server garuda so it installs the hooks 
   # on the test.git remote repository
-  `cd tests/tmp/local; git clone ../server/garuda`
-  `cd garuda; touch foo; git add .; git commit -m 'nothing'; git push origin master`
+  `cd tests/tmp/local; git clone ../server/garuda
+  cd garuda; touch foo; git add .; git commit -m 'nothing'; git push origin master`
   # get back to where we started
   Dir.chdir @root
 end
@@ -91,7 +91,7 @@ end
 task :push_to_test => [:push_to_garuda] do |t|
   # update the local test repository and push to the remote test.git repository
   # this will make the installed hook run in test.git/hooks
-  `cd tests/tmp/local/test; git touch foo; git add .; git commit -m 'nothing'; git push origin master`
+  `cd tests/tmp/local/test; touch foo; git add .; git commit -m 'nothing'; git push origin master`
   # get back to where we started
   Dir.chdir @root
 end
