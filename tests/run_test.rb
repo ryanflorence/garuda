@@ -9,7 +9,7 @@ class RunTest < Test::Unit::TestCase
 
     should "run the scripts" do
       log = `./run test heads master`
-      expected = "# Running script: tests/create_file\nFile created\n"
+      expected = "# Running script: tests/no_env_vars\n# Running script: tests/create_file\nFile created\n"
       assert_equal expected, log
     end
 

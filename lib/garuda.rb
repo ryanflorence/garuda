@@ -45,11 +45,11 @@ class Garuda
             end
             # assign environment variable
             ENV[k] = v.to_s
-          end
+          end if args
           # execute the script
           system("./../../../bin/#{script}")
           # clear ENV
-          args.each { |k,v| ENV[k] = nil }
+          args.each { |k,v| ENV[k] = nil } if args
         end
       end
     end

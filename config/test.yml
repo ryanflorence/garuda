@@ -1,7 +1,8 @@
 heads:
   master:
-    'tests/create_file':
+    tests/create_file:
       foo: 'bar'
+    tests/no_env_vars:
   develop:
     test:
       src: '#{tree}/'
