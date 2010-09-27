@@ -23,7 +23,6 @@ class GitoInstallTest < Test::Unit::TestCase
     should "install the remote/garuda.git hook" do
       Dir.chdir @server
       assert File.exists? 'garuda.git/hooks/post-receive'
-      assert File.executable? 'garuda.git/hooks/post-receive'
       Dir.chdir @pwd
     end
     
