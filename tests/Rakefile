@@ -7,7 +7,9 @@ Dir.chdir('..')
 
 task :default => [:testall]
 task :testall => [
+  :test_languages,
   :test_garuda,
+  :test_run_script,
   :test_simple,
   :test_gito
 ]
@@ -16,13 +18,23 @@ task :testall => [
 # Tests
 # -----------------------------------------------------------------------
 
-desc 'Tests local stuff not involving installation'
+desc 'Test the Garuda Class'
 task :test_garuda do
-  ruby 'tests/languages_test.rb'
   Rake::Task["create_repo"].execute
   ruby 'tests/garuda_test.rb'
+  Rake::Task["remove_repo"].execute
+end
+
+desc 'Tests the `run` script'
+task :test_run_script do
+  Rake::Task["create_repo"].execute
   ruby 'tests/run_test.rb'
   Rake::Task["remove_repo"].execute
+end
+
+desc 'Tests if environment can run ruby, python, and node'
+task :test_languages do
+  ruby 'tests/languages_test.rb'
 end
 
 desc 'Runs the simple Installation tests'
