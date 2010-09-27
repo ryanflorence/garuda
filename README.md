@@ -1,9 +1,45 @@
-Garuda deployment and git post-receive script runner
-====================================================
+Garuda - automated deployment 
+=============================
+
+#### and git post-receive hook script runner
 
 Who can benefit from Garuda?
 ----------------------------
 
+Anybody who deploys several websites and applications to several servers stand to benefit the most.  But anybody who hosts git repositories remotely will also find Garuda to be helpful.
+
+What is Garuda?
+---------------
+
+When a user pushes to a remote git repository, Garuda manages which scripts you'd like to run and which environment variables you'd like to be available.  All of this is defined in a config file for the repository.
+
+### A config example file
+
+    # config/awesome_site.yml
+    
+    heads:
+      develop:
+        deploy/rsync:
+          src: htdocs/
+          dst: user@domain.com:/home/user/dev/htdocs
+    
+    tags:
+      # Matches 1.2.2-RC1, 2.12.1-RC2 etc.
+      '^[0-9]+.[0-9]+.[0-9]+-RC[0-9]+$'
+        deploy/rsync:
+          src: htdocs/
+          dst: user@domain.com:/home/user/staging/htdocs
+      
+      # Matches 1.2.2, 2.12.1, etc.
+      '^[0-9]+.[0-9]+.[0-9]+$':
+        util/rename:
+          htaccess.production: .htaccess
+        deploy/ftp:
+          src: htdocs
+          server: 111.11.1.11
+          user: joe
+          pass: shcmoe
+          dst: ./user/production/htdocs
 
 Installation
 ------------
