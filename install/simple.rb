@@ -3,13 +3,11 @@
 # Installation
 # ------------
 #
-# 1. Add garuda to your conf file, then clone it locally
-# 
-# 2. Navigate to the home directory of your gitosis / gitolite user on your server
+# 1. Navigate to the directory on your server where you want to install 
 
-# 3. Run this in the terminal (on the server)
+# 2. Run this in the terminal
 # 
-#      $ ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/.install/gito.rb)"
+#      $ ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/install/simple.rb)"
 # 
 #
 require 'rubygems'
@@ -48,36 +46,25 @@ def system *args
 end
 
 puts
-ohai "I'm going to try to install garuda for a gitosis / gitolite setup:"
+ohai "I'm going to install garuda to this directory:"
+pwd = `pwd`.chomp
+puts "\n  #{pwd}/garuda\n\n"
 puts
-#puts "#{Tty.blue}Would you like me to continue? (type yes/no):#{Tty.reset} "
+puts "#{Tty.blue}Would you like me to continue? (type yes/no):#{Tty.reset} "
 #confirm = gets
 #abort unless confirm.chomp.downcase == ('yes' || 'y')
 
-pwd = `pwd`.chomp
-
-unless File.directory?("#{pwd}/garuda.git")
-  puts "#{Tty.red}Error#{Tty.reset}: I tried to find #{pwd}/garuda.git, but didn't."
-  puts
-  puts "  1. Add garuda to your gitosis or gitolite conf file, then clone it locally."
-  puts "  2. Try this install again from the gitosis/gitolite users's directory."
-  puts
-end
-
-# clone source
 system "git clone #{src}"
 Dir.chdir('garuda')
+File.rename('.git/hooks/post-receive.sample', '.git/hooks/post-receive') if File.exists?('.git/hooks/post-receive.sample')
+system "chmod +x .git/hooks/post-receive"
+system "git config receive.denyCurrentBranch ignore"
 
-# add gitosis/gitolite repo as a remote and push
-system "git remote add gito #{pwd}/garuda.git"
-system "git push gito master"
 
-# install the hook on the bare repository
-Dir.chdir("#{pwd}/garuda.git")
-File.rename('hooks/post-receive.sample', 'hooks/post-receive') if File.exists?('hooks/post-receive.sample')
-system "chmod +x hooks/post-receive"
 
 script = %q(#!/usr/bin/env ruby
+# this file is merely a "clipboard" to edit the hook and paste the text into the `simple.rb` install script
+
 require 'rubygems'
 require 'yaml'
 require 'erb'
@@ -94,14 +81,14 @@ def system *args
   abort "Failed during: #{args.shell_s}" unless Kernel.system *args
 end
 
-# reset clone - gitosis / gitolite install
-puts "Updating the clone's working tree"
-Dir.chdir('../garuda')
+# reset the working tree
+Dir.chdir('..')
+puts "Resetting the working tree"
 ENV['GIT_DIR'] = '.git'
-system "umask 002 && git pull gito master"
+system "umask 002 && git reset --hard"
 
 # Create template
-template      = File.open('.install/post-receive.erb')
+template      = File.open('install/post-receive.erb')
 erb           = ERB.new(template, 0, "%<>")
 garuda_dir    = `pwd`.chomp
 hook_contents = erb.result
@@ -139,7 +126,8 @@ end
 
 )
 
-File.open('hooks/post-receive', 'w'){ |f| f.write(script) }
+
+File.open('.git/hooks/post-receive', 'w'){ |f| f.write(script) }
 # get back out of garuda
 Dir.chdir('..')
 
@@ -148,15 +136,15 @@ ohai "Installation complete"
 puts
 puts "#{Tty.red}Next steps:#{Tty.reset}"
 puts
-puts "  1. In your local working tree, pull changes from gitosis / gitolite remote repository"
+puts "  1. Clone this repository on your local machine"
 puts
-puts "     git pull origin master"
+puts "     git clone ssh://user@example.net/#{pwd}/garuda"
 puts 
 puts "  2. Create config files with names that match their repositories in config/"
 puts
 puts "     config/awesome.yml  # => matches awesome.git"
 puts
-puts "  3. Commit and push your changes."
+puts "  3. Commit and push your changes"
 puts
 puts "     git commit -a -m 'updates'\n     git push origin master"
 puts

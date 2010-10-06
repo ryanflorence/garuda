@@ -63,7 +63,7 @@ task :simple_env do
   
   # install garuda
   Dir.chdir('tests/tmp/server')
-  load "#@root/.install/simple.rb"
+  load "#@root/install/simple.rb"
   Dir.chdir @root
   
   # clone to remote/garuda, commit to remote/garuda
@@ -86,7 +86,7 @@ task :gito_env do
   
   # install garuda
   Dir.chdir('tests/tmp/server')
-  load "#@root/.install/gito.rb"
+  load "#@root/install/gito.rb"
   Dir.chdir @root
   
   # clone to remote/garuda, commit to remote/garuda

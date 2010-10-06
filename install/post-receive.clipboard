@@ -30,7 +30,7 @@ ENV['GIT_DIR'] = '.git'
 system "umask 002 && git pull gito master"
 
 # Create template
-template      = File.open('.install/post-receive.erb')
+template      = File.open('install/post-receive.erb')
 erb           = ERB.new(template, 0, "%<>")
 garuda_dir    = `pwd`.chomp
 hook_contents = erb.result
