@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+# this file is merely a "clipboard" to edit the hook and paste the text into the `simple.rb` install script
+
+require 'rubygems'
+require 'yaml'
+require 'erb'
+
+class Array
+  def shell_s
+    cp = dup
+    first = cp.shift
+    cp.map{ |arg| arg.gsub " ", "\\ " }.unshift(first) * " "
+  end
+end
+ 
+def system *args
+  abort "Failed during: #{args.shell_s}" unless Kernel.system *args
+end
+
+# reset the working tree - simple install
+Dir.chdir('..')
+puts "Resetting the working tree"
+ENV['GIT_DIR'] = '.git'
+system "umask 002 && git reset --hard"
+
+# reset clone - gitosis / gitolite install
+puts "Updating the clone's working tree"
+Dir.chdir('../garuda')
+ENV['GIT_DIR'] = '.git'
+system "umask 002 && git pull gito master"
+
+# Create template
+template      = File.open('install/post-receive.erb')
+erb           = ERB.new(template, 0, "%<>")
+garuda_dir    = `pwd`.chomp
+hook_contents = erb.result
+
+# install the post-receive script on all the repositories
+Dir.open('config').each do |file|
+  if file.match /\.yml$/
+    repo     = file.gsub /\.yml$/, ''
+    base_dir = "../#{repo}.git"
+
+    puts "Updating hook for #{repo}"
+
+    if File.exists? base_dir
+      hook = "#{base_dir}/hooks/post-receive"
+
+      unless File.exists? hook
+        puts "Renaming #{base_dir}/hooks/post-receive.sample to #{base_dir}/hooks/post-receive"
+        File.rename("#{base_dir}/hooks/post-receive.sample", hook) 
+      end
+
+      unless File.executable? hook
+        puts  "chmod +x #{hook}"
+        system "chmod +x #{hook}"
+      end
+
+      File.open(hook, 'w'){ |f| f.write(hook_contents) }
+    else
+      puts "Repository #{repo} has a configuration in config/#{repo}.yml, but the repository doesn't exist in:"
+      puts "Directory: #{base_dir}"
+      puts
+    end
+
+  end
+end

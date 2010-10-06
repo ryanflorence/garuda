@@ -44,8 +44,7 @@ When a user pushes to a remote git repository, Garuda manages which scripts you'
 Installation
 ------------
 
-  ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/.install/install.rb)"
-
+  ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/install/install.rb)"
 
 Writing scripts
 ---------------
