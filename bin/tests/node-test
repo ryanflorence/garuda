@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+console.log(process.env['arg1'])
+console.log(process.env['arg2'])

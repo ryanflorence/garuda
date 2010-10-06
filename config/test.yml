@@ -1,0 +1,9 @@
+heads:
+  master:
+    tests/no_env_vars:
+    tests/create_file:
+      foo: 'bar'
+  develop:
+    deploy/rsync:
+      src: 'htdocs/'
+      dst: 'rpflorence@raflorence.net:/home/rpflorence/test'

@@ -1,0 +1,2 @@
+#!/bin/sh
+rsync -glpPrtvz --exclude=".git" $src $dst
