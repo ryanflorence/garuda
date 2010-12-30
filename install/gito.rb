@@ -14,8 +14,7 @@
 #
 require 'rubygems'
 
-#src = "git@github.com:rpflorence/garuda.git"
-src = "ssh://rpflorence@raflorence.net/~/git/garuda.git"
+src = "git@github.com:rpflorence/garuda.git"
 
 module Tty extend self
   def blue; bold 34; end
