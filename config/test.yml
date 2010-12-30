@@ -5,5 +5,5 @@ heads:
       foo: 'bar'
   develop:
     deploy/rsync:
-      src: 'htdocs/'
-      dst: 'rpflorence@raflorence.net:/home/rpflorence/test'
+      source: 'htdocs/'
+      destination: 'rpflorence@raflorence.net:/home/rpflorence/test'
