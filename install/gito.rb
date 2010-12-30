@@ -9,7 +9,7 @@
 
 # 3. Run this in the terminal (on the server)
 # 
-#      $ ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/install/gito.rb)"
+#      $ ruby -e "$(curl -fsS https://github.com/rpflorence/garuda/raw/master/install/gito.rb)"
 # 
 #
 require 'rubygems'

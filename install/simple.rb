@@ -7,7 +7,7 @@
 
 # 2. Run this in the terminal
 # 
-#      $ ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/install/simple.rb)"
+#      $ ruby -e "$(curl -fsS https://github.com/rpflorence/garuda/raw/master/install/simple.rb)"
 # 
 #
 require 'rubygems'

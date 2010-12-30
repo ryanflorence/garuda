@@ -51,14 +51,14 @@ Installation
 2. Navigate to the home directory of your gitosis / gitolite user on your server
 3. Run this in the terminal (on the server)
 
-        ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/install/gito.rb)"
+        ruby -e "$(curl -fsS https://github.com/rpflorence/garuda/raw/master/install/gito.rb)"
 
 ### Simple setup
 
 1. Navigate to the directory on your server where you want to install
 2. Run this in the terminal
 
-        ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/install/simple.rb)"
+        ruby -e "$(curl -fsS https://github.com/rpflorence/garuda/raw/master/install/simple.rb)"
 
 Writing scripts
 ---------------
