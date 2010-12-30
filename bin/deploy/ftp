@@ -9,5 +9,9 @@ puts "# Logging in to #{ENV['server']}"
 ftp = Net::FTP.new(ENV['server'])
 ftp.login(ENV['user'], ENV['password'])
 
-puts '# Uploading source directory ' + ENV['source']
-ftp.put_dir(ENV['source'], ENV['destination'])
+puts '# Updating remote directory ' + ENV['destination'] + ' with local directory ' + ENV['source']
+ftp.put_dir(
+  :local => ENV['source'], 
+  :remote => ENV['destination'], 
+  :verbose => true
+)
