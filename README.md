@@ -33,8 +33,8 @@ When a user pushes to a remote git repository, Garuda manages which scripts you'
       
       # Matches 1.2.2, 2.12.1, etc.
       '^[0-9]+.[0-9]+.[0-9]+$':
-        util/rename:
-          htaccess.production: .htaccess
+        rename:
+          rename: 'htaccess.production .htaccess'
         deploy/ftp:
           source: htdocs
           destination: ./user/production/htdocs
@@ -77,18 +77,18 @@ _sample yaml_
     heads:
       develop:
         'deploy/rsync':
-          src: 'htdocs/'
-          dst: 'user@domain.com:/home/user/site/htdocs'
+          source: 'htdocs/'
+          destination: 'user@domain.com:/home/user/site/htdocs'
     tags:
       '^[0-9]+.[0-9]+.[0-9]+$':
         rename:
-          htaccess.production: .htaccess
+          rename: 'htaccess.production .htaccess'
         'deploy/ftp':
-          src: 'htdocs'
+          source: 'htdocs'
+          destination: './public_html'
           server: 111.11.1.11
           user: joe
           pass: shcmoe
-          dst: './public_html'
           
 
 If a user pushes a branch like this: `$ git push origin develop`, on the server, Garuda will:

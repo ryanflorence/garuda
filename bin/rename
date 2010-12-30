@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+# Example YAML:
+#   rename:
+#     rename: 'htaccess-dev .htaccess, old.html new.html'
+
+require 'rubygems'
+require 'fileutils'
+
+files = ENV['rename'].split(',').each do |string_pair|
+  pair = string_pair.split(' ')
+  FileUtils.mv pair[0], pair[1]
+end
