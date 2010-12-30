@@ -49,9 +49,9 @@ end
 puts
 ohai "I'm going to try to install garuda for a gitosis / gitolite setup:"
 puts
-#puts "#{Tty.blue}Would you like me to continue? (type yes/no):#{Tty.reset} "
-#confirm = gets
-#abort unless confirm.chomp.downcase == ('yes' || 'y')
+puts "#{Tty.blue}Would you like me to continue? (type yes/no):#{Tty.reset} "
+confirm = gets
+abort unless confirm.chomp.downcase == ('yes' || 'y')
 
 pwd = `pwd`.chomp
 

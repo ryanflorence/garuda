@@ -50,8 +50,8 @@ pwd = `pwd`.chomp
 puts "\n  #{pwd}/garuda\n\n"
 puts
 puts "#{Tty.blue}Would you like me to continue? (type yes/no):#{Tty.reset} "
-#confirm = gets
-#abort unless confirm.chomp.downcase == ('yes' || 'y')
+confirm = gets
+abort unless confirm.chomp.downcase == ('yes' || 'y')
 
 system "git clone #{src}"
 Dir.chdir('garuda')
