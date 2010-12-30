@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+# this file requires the ftp-ext ruby gem, install with
+#   gem install ftp-ext
+require 'rubygems'
+require 'ftp-ext'
+
+puts "# Logging in to #{ENV['server']}"
+ftp = Net::FTP.new(ENV['server'])
+ftp.login(ENV['user'], ENV['password'])
+
+puts "# Synchronizing remote directory #{ENV['destination']} with local directory #{ENV['source']}"
+ftp.sync_dir(ENV['source'], ENV['destination'])
