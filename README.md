@@ -3,6 +3,7 @@ Garuda - automated deployment
 
 #### and git post-receive hook script runner
 
+
 Who can benefit from Garuda?
 ----------------------------
 
@@ -20,31 +21,44 @@ When a user pushes to a remote git repository, Garuda manages which scripts you'
     heads:
       develop:
         deploy/rsync:
-          src: htdocs/
-          dst: user@domain.com:/home/user/dev/htdocs
+          source: htdocs/
+          destination: user@domain.com:/home/user/dev/htdocs
     
     tags:
       # Matches 1.2.2-RC1, 2.12.1-RC2 etc.
       '^[0-9]+.[0-9]+.[0-9]+-RC[0-9]+$'
         deploy/rsync:
-          src: htdocs/
-          dst: user@domain.com:/home/user/staging/htdocs
+          source: htdocs/
+          destination: user@domain.com:/home/user/staging/htdocs
       
       # Matches 1.2.2, 2.12.1, etc.
       '^[0-9]+.[0-9]+.[0-9]+$':
         util/rename:
           htaccess.production: .htaccess
         deploy/ftp:
-          src: htdocs
-          server: 111.11.1.11
+          source: htdocs
+          destination: ./user/production/htdocs
+          host: 111.11.1.11
           user: joe
           pass: shcmoe
-          dst: ./user/production/htdocs
 
 Installation
 ------------
 
-  ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/install/install.rb)"
+### Gitosis / Gitolite setups
+
+1. Add garuda to your conf file, then clone it locally
+2. Navigate to the home directory of your gitosis / gitolite user on your server
+3. Run this in the terminal (on the server)
+
+        ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/install/gito.rb)"
+
+### Simple setup
+
+1. Navigate to the directory on your server where you want to install
+2. Run this in the terminal
+
+        ruby -e "$(curl -fsS http://github.com/rpflorence/garuda/raw/master/install/simple.rb)"
 
 Writing scripts
 ---------------
